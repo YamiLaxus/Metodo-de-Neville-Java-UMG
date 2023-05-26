@@ -3,6 +3,7 @@ package com.osdev.nevillemethod.ui;
 import static com.osdev.nevillemethod.NevilleMethod.Neville;
 import java.awt.Color;
 import java.awt.Dimension;
+import static java.nio.file.Files.size;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
@@ -16,37 +17,26 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainForm extends javax.swing.JFrame {
 
-    private List<JTextField> datosXY;
+    final private List<JTextField> datosXY;
     private int indice;
-
-    public class Datos {
-
-        public double[] x;
-        public double[] y;
-        public double p;
-
-        public Datos(double[] x, double[] y, double p) {
-            this.x = x;
-            this.y = y;
-            this.p = p;
-        }
-
-    }
+    ArrayList<Double> x = new ArrayList<>();
+    ArrayList<Double> fx = new ArrayList<>();
+    public double p;
 
     public MainForm() {
         initComponents();
         panel_contenedor.setVisible(false);
-        datosXY = new ArrayList<JTextField>();
+        datosXY = new ArrayList<>();
         indice = 0;
 
     }
 
-    public static double Neville(double[] x, double[] y, double p) {
+    public static double Neville(double[] x, double[] fx, double p) {
         int n = x.length;
         double[][] q = new double[n][n];
 
         for (int i = 0; i < n; i++) {
-            q[i][0] = y[i];
+            q[i][0] = fx[i];
         }
 
         for (int i = 1; i < n; i++) {
@@ -83,6 +73,7 @@ public class MainForm extends javax.swing.JFrame {
         btn_cancelar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        panel_resultado = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -236,6 +227,11 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane2.setViewportView(panel_form);
 
         btn_calcular.setText("CALCULAR");
+        btn_calcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_calcularActionPerformed(evt);
+            }
+        });
 
         btn_cancelar.setText("CANCELAR");
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -250,6 +246,17 @@ public class MainForm extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("F(x)");
 
+        javax.swing.GroupLayout panel_resultadoLayout = new javax.swing.GroupLayout(panel_resultado);
+        panel_resultado.setLayout(panel_resultadoLayout);
+        panel_resultadoLayout.setHorizontalGroup(
+            panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panel_resultadoLayout.setVerticalGroup(
+            panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 143, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panel_contenedorLayout = new javax.swing.GroupLayout(panel_contenedor);
         panel_contenedor.setLayout(panel_contenedorLayout);
         panel_contenedorLayout.setHorizontalGroup(
@@ -258,6 +265,11 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_contenedorLayout.createSequentialGroup()
+                        .addComponent(btn_calcular)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_cancelar)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(panel_contenedorLayout.createSequentialGroup()
                         .addGroup(panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panel_contenedorLayout.createSequentialGroup()
@@ -265,12 +277,9 @@ public class MainForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
-                    .addGroup(panel_contenedorLayout.createSequentialGroup()
-                        .addComponent(btn_calcular)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_cancelar)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panel_resultado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         panel_contenedorLayout.setVerticalGroup(
@@ -282,13 +291,15 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(btn_cancelar))
                 .addGap(18, 18, 18)
                 .addGroup(panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panel_contenedorLayout.createSequentialGroup()
                         .addGroup(panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))
                         .addGap(5, 5, 5)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(panel_resultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -310,6 +321,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btn_nuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_nuevoMouseClicked
 
+        String datoX;
         int grado = Integer.parseInt(JOptionPane.showInputDialog("Inserta el grado: "));
 
         if (grado < 2 || grado > 10) {
@@ -317,22 +329,41 @@ public class MainForm extends javax.swing.JFrame {
         } else {
             panel_contenedor.setVisible(true);
             do {
+                String textFieldIdX = "TextField" + indice;
                 JTextField jtextX = new JTextField();
+                jtextX.setName(textFieldIdX);
                 jtextX.setSize(200, 200);
                 panel_form.add(jtextX);
                 datosXY.add(jtextX);
+                datoX = jtextX.getText();
                 indice++;
                 int indiceY = indice - 1;
+                String textFieldIdY = "TextField" + indiceY;
                 JTextField jtextY = new JTextField();
+                jtextY.setName(textFieldIdY);
                 jtextY.setSize(200, 200);
                 panel_form.add(jtextY);
                 datosXY.add(jtextY);
+                addTextField(indice);
 
             } while (indice <= grado - 1);
 
             panel_form.updateUI();
+
+            try {
+                double raizX = Double.parseDouble(datoX);
+                x.add(raizX);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ingresa un valor numerico.");
+            }
         }
     }//GEN-LAST:event_btn_nuevoMouseClicked
+
+    public void addTextField(int indice) {
+        String textFieldId = "TextField" + indice;
+        JTextField jTextX = new JTextField(20);
+        jTextX.setName(textFieldId);
+    }
 
     private void btn_salirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_salirMouseClicked
         System.exit(0);
@@ -351,6 +382,10 @@ public class MainForm extends javax.swing.JFrame {
         panel_form.updateUI();
         panel_contenedor.setVisible(false);
     }//GEN-LAST:event_btn_cancelarActionPerformed
+
+    private void btn_calcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calcularActionPerformed
+        System.out.println(x);
+    }//GEN-LAST:event_btn_calcularActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -397,6 +432,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel panel_contenedor;
     private javax.swing.JPanel panel_form;
+    private javax.swing.JPanel panel_resultado;
     private javax.swing.JPanel sidePanel;
     // End of variables declaration//GEN-END:variables
 }
