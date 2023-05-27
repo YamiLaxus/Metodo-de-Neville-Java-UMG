@@ -1,6 +1,5 @@
 package com.osdev.nevillemethod.ui;
 
-import static com.osdev.nevillemethod.NevilleMethod.Neville;
 import java.awt.Color;
 import java.awt.Dimension;
 import static java.nio.file.Files.size;
@@ -74,6 +73,9 @@ public class MainForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         panel_resultado = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jbl_resultado = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -246,15 +248,40 @@ public class MainForm extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("F(x)");
 
+        jbl_resultado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jbl_resultado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jbl_resultado)
+                .addContainerGap(41, Short.MAX_VALUE))
+        );
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("RESULTADO");
+
         javax.swing.GroupLayout panel_resultadoLayout = new javax.swing.GroupLayout(panel_resultado);
         panel_resultado.setLayout(panel_resultadoLayout);
         panel_resultadoLayout.setHorizontalGroup(
             panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_resultadoLayout.createSequentialGroup()
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panel_resultadoLayout.setVerticalGroup(
             panel_resultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 143, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_resultadoLayout.createSequentialGroup()
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout panel_contenedorLayout = new javax.swing.GroupLayout(panel_contenedor);
@@ -285,7 +312,7 @@ public class MainForm extends javax.swing.JFrame {
         panel_contenedorLayout.setVerticalGroup(
             panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_contenedorLayout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(panel_contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_calcular)
                     .addComponent(btn_cancelar))
@@ -321,41 +348,46 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btn_nuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_nuevoMouseClicked
 
-        String datoX;
+        x.clear();
+        fx.clear();
+        indice = 0;
+        jbl_resultado.setText("");
+        p = 0;
+
         int grado = Integer.parseInt(JOptionPane.showInputDialog("Inserta el grado: "));
+        p = grado;
 
         if (grado < 2 || grado > 10) {
             JOptionPane.showMessageDialog(null, "El grado debe ser mayor a 1 y menor a 10.");
         } else {
             panel_contenedor.setVisible(true);
-            do {
-                String textFieldIdX = "TextField" + indice;
-                JTextField jtextX = new JTextField();
-                jtextX.setName(textFieldIdX);
-                jtextX.setSize(200, 200);
-                panel_form.add(jtextX);
-                datosXY.add(jtextX);
-                datoX = jtextX.getText();
-                indice++;
-                int indiceY = indice - 1;
-                String textFieldIdY = "TextField" + indiceY;
-                JTextField jtextY = new JTextField();
-                jtextY.setName(textFieldIdY);
-                jtextY.setSize(200, 200);
-                panel_form.add(jtextY);
-                datosXY.add(jtextY);
-                addTextField(indice);
 
+            do {
+                Double rX = Double.parseDouble(JOptionPane.showInputDialog("Inserta X" + indice + ": "));
+                x.add(rX);
+                indice++;
+                int fxR = indice - 1;
+                Double rY = Double.parseDouble(JOptionPane.showInputDialog("Inserta Fx" + fxR + ": "));
+                fx.add(rY);
             } while (indice <= grado - 1);
 
-            panel_form.updateUI();
+//            do {               
+//                JTextField jtextX = new JTextField();
+//                panel_form.add(jtextX);
+//                datosXY.add(jtextX);                                
+//                indice++;
+//                int indiceY = indice - 1;
+//                String textFieldIdY = "TextField" + indiceY;
+//                JTextField jtextY = new JTextField();
+//                jtextY.setName(textFieldIdY);
+//                jtextY.setSize(200, 200);
+//                panel_form.add(jtextY);
+//                datosXY.add(jtextY);
+//                addTextField(indice);
+//
+//            } while (indice <= grado - 1);
+            panel_contenedor.updateUI();
 
-            try {
-                double raizX = Double.parseDouble(datoX);
-                x.add(raizX);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ingresa un valor numerico.");
-            }
         }
     }//GEN-LAST:event_btn_nuevoMouseClicked
 
@@ -385,6 +417,27 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btn_calcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calcularActionPerformed
         System.out.println(x);
+        System.out.println(fx);
+
+        if (x.size() <= 0) {
+            JOptionPane.showMessageDialog(null, "No ingreso valores, intente de nuevo!.");
+        } else {
+            double[] doubleArrayX = new double[x.size()];
+            for (int i = 0; i < x.size(); i++) {
+                doubleArrayX[i] = x.get(i);
+            }
+
+            double[] doubleArrayFx = new double[fx.size()];
+            for (int i = 0; i < fx.size(); i++) {
+                doubleArrayFx[i] = fx.get(i);
+            }
+
+            double result = Neville(doubleArrayX, doubleArrayFx, p);
+
+            String resultText = String.valueOf(result);
+            jbl_resultado.setText(resultText);
+            System.out.println(resultText + result);
+        }
     }//GEN-LAST:event_btn_calcularActionPerformed
 
     public static void main(String args[]) {
@@ -426,8 +479,11 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jbl_resultado;
     private javax.swing.JTable jtable_datos;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel panel_contenedor;
